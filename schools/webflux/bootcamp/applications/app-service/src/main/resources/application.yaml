@@ -1,0 +1,85 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: "capability"
+  datasource:
+    driver-class-name: "org.postgresql.Driver"
+    host: "localhost"
+    port: 5432
+    database: "school_bootcamp"
+    username: "postgres"
+    password: "postgres"
+    schema: "public"
+  devtools:
+    add-properties: false
+  h2:
+    console:
+      enabled: true
+      path: "/h2"
+  profiles:
+    include: null
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    circuitbreakers:
+      enabled: true
+logging:
+  level:
+    org.springframework.security: "DEBUG"
+    org.springframework.web: "DEBUG"
+cors:
+  allowed-origins: "http://localhost:4200,http://localhost:8080"
+jwt:
+  secret: "VQasauJliIvkAJIc29suAFYpKItz7jkinzImfhSxCD4="
+  audience: "pragma-user-service"
+  issuer: "pragma-auth-service"
+  expiration: 2592000
+swagger:
+  title: "bootcamp create services api"
+  description: "API documentation for the bootcamp Service"
+  version: "1.0.0"
+  urlServer: "http://localhost:8083"
+springdoc:
+  api-docs:
+    path: "/api-docs"
+  swagger-ui:
+    path: "/swagger-ui.html"
+    enabled: true
+    operationsSorter: "method"
+    tagsSorter: "alpha"
+adapter:
+  capability:
+    timeout: 5000
+    host: "http://localhost:8081"
+  reports:
+    timeout: 5000
+    host: "http://localhost:8084"
+resilience4j:
+  circuitbreaker:
+    instances:
+      testGet:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: "2s"
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        waitDurationInOpenState: "10s"
+      testPost:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: "2s"
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        waitDurationInOpenState: "10s"
